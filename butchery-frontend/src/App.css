@@ -1,0 +1,107 @@
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.masthead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 16px;
+  margin-bottom: 8px;
+}
+
+.masthead h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 28px;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.masthead .status {
+  font-family: var(--font-ledger);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 3px;
+}
+.status.ok { background: #E4EBDF; color: var(--moss); }
+.status.error { background: #F3E1DD; color: var(--brick); }
+.status.loading { background: var(--paper-raised); color: var(--steel); }
+
+.subhead {
+  font-size: 14px;
+  color: var(--steel);
+  margin: 4px 0 32px;
+}
+
+.branch-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.branch-card {
+  position: relative;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Signature touch: a hook-tag notch on each branch card,
+   evoking a price tag hung on a butcher's hook */
+.branch-card::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 10px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 50%;
+}
+
+.branch-name {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.branch-tag {
+  font-family: var(--font-ledger);
+  font-size: 11px;
+  color: var(--rust);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: 2px;
+  display: block;
+}
+
+.branch-id {
+  font-family: var(--font-ledger);
+  font-size: 13px;
+  color: var(--steel);
+}
+
+.error-box {
+  background: #F3E1DD;
+  border: 1px solid var(--brick);
+  color: var(--brick);
+  padding: 16px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.error-box code {
+  font-family: var(--font-ledger);
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
