@@ -1,11 +1,24 @@
 import { useEffect, useState } from 'react';
+import { Store, ClipboardCheck, Split, BarChart3, Bell, ChefHat, Users, Receipt } from 'lucide-react';
 import { apiGet, getUser, clearSession } from './api';
 import Login from './Login';
 import ClosingEntry from './ClosingEntry';
 import BreakdownEntry from './BreakdownEntry';
 import ReportDashboard from './ReportDashboard';
 import NotificationsPanel from './NotificationsPanel';
+import CustomersPanel from './CustomersPanel';
+import SalesEntry from './SalesEntry';
 import './App.css';
+
+const TABS = [
+  { id: 'branches', label: 'Branches', icon: Store },
+  { id: 'sales', label: 'Sales', icon: Receipt },
+  { id: 'closing', label: 'Closing entry', icon: ClipboardCheck },
+  { id: 'breakdown', label: 'Carcass & breakdown', icon: Split },
+  { id: 'reports', label: 'Reports', icon: BarChart3 },
+  { id: 'alerts', label: 'Alerts', icon: Bell },
+  { id: 'customers', label: 'Customers', icon: Users },
+];
 
 export default function App() {
   const [user, setUser] = useState(getUser());
@@ -39,7 +52,13 @@ export default function App() {
   return (
     <div className="page">
       <div className="masthead">
-        <h1>Butchery ERP</h1>
+        <div className="brand">
+          <div className="brand-mark"><ChefHat size={20} /></div>
+          <div>
+            <h1>Butchery ERP</h1>
+            <p className="tagline">Yield, sales &amp; loss tracking</p>
+          </div>
+        </div>
         <div className="user-badge">
           <span className={`status ${status}`}>
             {status === 'loading' && 'connecting…'}
@@ -52,21 +71,12 @@ export default function App() {
       </div>
 
       <div className="tabs">
-        <button className={`tab-btn ${tab === 'branches' ? 'active' : ''}`} onClick={() => setTab('branches')}>
-          Branches
-        </button>
-        <button className={`tab-btn ${tab === 'closing' ? 'active' : ''}`} onClick={() => setTab('closing')}>
-          Closing entry
-        </button>
-        <button className={`tab-btn ${tab === 'breakdown' ? 'active' : ''}`} onClick={() => setTab('breakdown')}>
-          Carcass & breakdown
-        </button>
-        <button className={`tab-btn ${tab === 'reports' ? 'active' : ''}`} onClick={() => setTab('reports')}>
-          Reports
-        </button>
-        <button className={`tab-btn ${tab === 'alerts' ? 'active' : ''}`} onClick={() => setTab('alerts')}>
-          Alerts
-        </button>
+        {TABS.map(({ id, label, icon: Icon }) => (
+          <button key={id} className={`tab-btn ${tab === id ? 'active' : ''}`} onClick={() => setTab(id)}>
+            <Icon size={15} />
+            {label}
+          </button>
+        ))}
       </div>
 
       {status === 'error' && (
@@ -96,6 +106,13 @@ export default function App() {
         </>
       )}
 
+      {status === 'ok' && tab === 'sales' && (
+        <>
+          <p className="subhead">Record a sale</p>
+          <SalesEntry />
+        </>
+      )}
+
       {status === 'ok' && tab === 'closing' && (
         <>
           <p className="subhead">End of day closing entry</p>
@@ -121,6 +138,13 @@ export default function App() {
         <>
           <p className="subhead">Alerts</p>
           <NotificationsPanel />
+        </>
+      )}
+
+      {status === 'ok' && tab === 'customers' && (
+        <>
+          <p className="subhead">Credit accounts</p>
+          <CustomersPanel />
         </>
       )}
     </div>

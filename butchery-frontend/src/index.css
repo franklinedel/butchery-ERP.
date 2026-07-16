@@ -1,21 +1,27 @@
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* Color tokens — butcher-paper ledger, not the default AI cream/terracotta pairing */
+  /* Color tokens — butcher-paper ledger */
   --ink: #2B241C;
   --paper: #EFE7D8;
-  --paper-raised: #F7F2E6;
+  --paper-raised: #F8F3E7;
   --rust: #A8481F;
   --rust-dim: #C97A54;
+  --rust-deep: #833515;
   --steel: #46586B;
   --moss: #5C7A52;
   --ochre: #B98229;
   --brick: #8C2F26;
-  --line: #D8CDB4;
+  --line: #DDD2B8;
+  --line-soft: #E8DFC9;
 
   --font-display: 'Fraunces', serif;
   --font-body: 'Inter', sans-serif;
   --font-ledger: 'IBM Plex Mono', monospace;
+
+  --shadow-sm: 0 1px 2px rgba(43, 36, 28, 0.06), 0 1px 1px rgba(43, 36, 28, 0.04);
+  --shadow-md: 0 4px 12px rgba(43, 36, 28, 0.08), 0 2px 4px rgba(43, 36, 28, 0.05);
+  --shadow-lg: 0 12px 32px rgba(43, 36, 28, 0.14), 0 4px 10px rgba(43, 36, 28, 0.08);
 
   color-scheme: light;
 }
@@ -28,7 +34,10 @@ html, body, #root {
 }
 
 body {
-  background: var(--paper);
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(var(--line-soft) 0.6px, transparent 0.6px);
+  background-size: 22px 22px;
   color: var(--ink);
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
@@ -42,7 +51,9 @@ body {
 button {
   font-family: var(--font-body);
   cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, background-color 0.15s ease;
 }
+button:active { transform: translateY(1px); }
 
 a { color: var(--rust); }
 

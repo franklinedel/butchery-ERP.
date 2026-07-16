@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChefHat } from 'lucide-react';
 import { login } from './api';
 
 export default function Login({ onLoggedIn }) {
@@ -23,25 +24,36 @@ export default function Login({ onLoggedIn }) {
 
   return (
     <div className="login-page">
-      <form className="login-card" onSubmit={handleSubmit}>
-        <h1 className="login-title">Butchery ERP</h1>
-        <p className="login-subtitle">Sign in to continue</p>
+      <div className="login-shell">
+        <div className="login-panel">
+          <div className="brand-mark"><ChefHat size={20} /></div>
+          <div>
+            <h2>Every kilo, accounted for.</h2>
+            <p>Track what comes in from the slaughterhouse, what's sold, what's given on
+              credit, and where the difference goes — across every branch.</p>
+          </div>
+        </div>
 
-        <label className="login-field">
-          Username
-          <input value={username} onChange={(e) => setUsername(e.target.value)} autoFocus />
-        </label>
-        <label className="login-field">
-          Password
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </label>
+        <form className="login-card" onSubmit={handleSubmit}>
+          <h1 className="login-title">Sign in</h1>
+          <p className="login-subtitle">Butchery ERP</p>
 
-        {error && <p className="inline-error">{error}</p>}
+          <label className="login-field">
+            Username
+            <input value={username} onChange={(e) => setUsername(e.target.value)} autoFocus />
+          </label>
+          <label className="login-field">
+            Password
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </label>
 
-        <button className="save-btn" type="submit" disabled={loading} style={{ width: '100%', marginTop: 8 }}>
-          {loading ? 'Signing in…' : 'Sign in'}
-        </button>
-      </form>
+          {error && <p className="inline-error">{error}</p>}
+
+          <button className="save-btn" type="submit" disabled={loading} style={{ width: '100%', marginTop: 8 }}>
+            {loading ? 'Signing in…' : 'Sign in'}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

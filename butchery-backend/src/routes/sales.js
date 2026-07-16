@@ -5,7 +5,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
-const requireOwnBranch = require('../middleware/branchesAccess');
+const requireOwnBranch = require('../middleware/branchAccess');
 
 // POST /api/sales
 // body: { branch_id, product_id, customer_id (optional), sale_date,
@@ -51,7 +51,7 @@ router.get('/', requireOwnBranch('branch_id', 'query'), async (req, res) => {
     const { branch_id, date } = req.query;
     try {
         const result = await pool.query(
-            `SELECT s.*, b.name AS branch_name, p.name AS product_name, c.name AS customer_name
+            `SELECT s.*, b.name AS branch_name, p.name AS product_name, c.name AS customer_name, c.customer_type AS customer_type
              FROM sales s
              JOIN branches b ON b.id = s.branch_id
              JOIN products p ON p.id = s.product_id

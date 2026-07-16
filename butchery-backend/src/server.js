@@ -17,6 +17,7 @@ const paymentsRouter = require('./routes/payments');
 const expensesRouter = require('./routes/expenses');
 const reportsRouter = require('./routes/reports');
 const notificationsRouter = require('./routes/notifications');
+const customersRouter = require('./routes/customers');
 
 const app = express();
 app.use(cors());
@@ -50,6 +51,7 @@ app.use('/api/payments', paymentsRouter);
 app.use('/api/expenses', expensesRouter);
 app.use('/api/reports', reportsRouter);
 app.use('/api/notifications', notificationsRouter);
+app.use('/api/customers', customersRouter);
 
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
