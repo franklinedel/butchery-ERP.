@@ -6,10 +6,11 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
+const requireOwnBranch = require('../middleware/branchesAccess');
 
 // POST /api/daily-stock
 // body: { branch_id, product_id, stock_date, closing_kg }
-router.post('/', async (req, res) => {
+router.post('/', requireOwnBranch('branch_id', 'body'), async (req, res) => {
     const { branch_id, product_id, stock_date, closing_kg } = req.body;
 
     if (!branch_id || !product_id || !stock_date || closing_kg === undefined) {
@@ -22,6 +23,10 @@ router.post('/', async (req, res) => {
     }
 
     try {
+        // ON CONFLICT: if a transfer already created this day's row
+        // (received_kg populated), only closing_kg gets updated —
+        // opening_kg and received_kg are left exactly as the
+        // triggers set them.
         const result = await pool.query(
             `INSERT INTO daily_stock (branch_id, product_id, stock_date, opening_kg, closing_kg)
              VALUES ($1, $2, $3, NULL, $4)
@@ -39,7 +44,7 @@ router.post('/', async (req, res) => {
 
 // GET /api/daily-stock?date=2026-07-12&branch_id=1
 // Convenience route to check what's been entered for a given day
-router.get('/', async (req, res) => {
+router.get('/', requireOwnBranch('branch_id', 'query'), async (req, res) => {
     const { date, branch_id } = req.query;
     try {
         const result = await pool.query(

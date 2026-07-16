@@ -3,10 +3,11 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
+const requireOwnBranch = require('../middleware/branchesAccess');
 
 // POST /api/expenses
 // body: { branch_id, expense_date, description, amount }
-router.post('/', async (req, res) => {
+router.post('/', requireOwnBranch('branch_id', 'body'), async (req, res) => {
     const { branch_id, expense_date, description, amount } = req.body;
 
     if (!branch_id || !expense_date || !description || amount === undefined) {
@@ -33,7 +34,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/expenses?branch_id=1&date=2026-07-14
-router.get('/', async (req, res) => {
+router.get('/', requireOwnBranch('branch_id', 'query'), async (req, res) => {
     const { branch_id, date } = req.query;
     try {
         const result = await pool.query(

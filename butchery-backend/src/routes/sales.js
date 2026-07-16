@@ -5,11 +5,12 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
+const requireOwnBranch = require('../middleware/branchesAccess');
 
 // POST /api/sales
 // body: { branch_id, product_id, customer_id (optional), sale_date,
 //         weight_kg, price_charged, payment_type, discount_reason (optional) }
-router.post('/', async (req, res) => {
+router.post('/', requireOwnBranch('branch_id', 'body'), async (req, res) => {
     const {
         branch_id, product_id, customer_id, sale_date,
         weight_kg, price_charged, payment_type, discount_reason,
@@ -46,7 +47,7 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/sales?branch_id=1&date=2026-07-14
-router.get('/', async (req, res) => {
+router.get('/', requireOwnBranch('branch_id', 'query'), async (req, res) => {
     const { branch_id, date } = req.query;
     try {
         const result = await pool.query(
