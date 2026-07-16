@@ -6,10 +6,11 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
+const requireOwnBranch = require('../middleware/branchAccess');
 
 // POST /api/carcass-purchases
 // body: { branch_id, animal_type, invoice_weight_kg, received_weight_kg, cost, purchase_date }
-router.post('/', async (req, res) => {
+router.post('/', requireOwnBranch('branch_id', 'body'), async (req, res) => {
     const { branch_id, animal_type, invoice_weight_kg, received_weight_kg, cost, purchase_date } = req.body;
 
     if (!branch_id || !animal_type || !invoice_weight_kg || !received_weight_kg || cost === undefined || !purchase_date) {

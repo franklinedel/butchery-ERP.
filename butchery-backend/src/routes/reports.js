@@ -4,9 +4,10 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
+const requireOwnBranch = require('../middleware/branchAccess');
 
 // GET /api/reports/branch/:id?date=2026-07-14
-router.get('/branch/:id', async (req, res) => {
+router.get('/branch/:id', requireOwnBranch('id', 'params'), async (req, res) => {
     const branchId = req.params.id;
     const date = req.query.date || new Date().toISOString().slice(0, 10);
 
@@ -49,6 +50,9 @@ router.get('/branch/:id', async (req, res) => {
 // GET /api/reports/comparison — all branches side by side, for the
 // "which branch is doing better" view
 router.get('/comparison', async (req, res) => {
+    if (req.user.role !== 'admin') {
+        return res.status(403).json({ error: 'Only admins can view the branch comparison' });
+    }
     try {
         const result = await pool.query(
             `SELECT branch_name, period_type, period_start, target_amount, actual_profit, pct_of_target

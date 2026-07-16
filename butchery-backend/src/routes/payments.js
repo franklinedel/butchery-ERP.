@@ -4,10 +4,11 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../config/db');
+const requireOwnBranch = require('../middleware/branchAccess');
 
 // POST /api/payments
 // body: { customer_id, branch_id, payment_date, amount }
-router.post('/', async (req, res) => {
+router.post('/', requireOwnBranch('branch_id', 'body'), async (req, res) => {
     const { customer_id, branch_id, payment_date, amount } = req.body;
 
     if (!customer_id || !branch_id || !payment_date || !amount) {
